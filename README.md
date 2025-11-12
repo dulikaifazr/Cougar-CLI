@@ -480,4 +480,4 @@ This is a derivative work of the Cline project. Please ensure you comply with th
 ---
 
 
-**Made with ❤️ for developers**
+
