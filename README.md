@@ -435,7 +435,6 @@ This project is based on [Cline](https://github.com/cline/cline) by Cline Bot In
 
 ### Changes Made
 
-- Renamed project from Cline to Cougar
 - Adapted for CLI-first usage
 - Optimized configuration management
 - Enhanced session handling
@@ -478,6 +477,7 @@ This is a derivative work of the Cline project. Please ensure you comply with th
 This is a derivative work of the Cline project. Please ensure you comply with the Apache License 2.0 when using, modifying, or distributing this software.
 
 ---
+
 
 
 
