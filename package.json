@@ -1,7 +1,7 @@
 {
   "name": "cougar-cli",
   "version": "0.1.0",
-  "description": "Cougar CLI - AI助手命令行工具",
+  "description": "Cougar CLI - AI Assistant Command-Line Tool",
   "main": "dist/index.js",
   "bin": {
     "cougar": "./dist/cli.js"
@@ -39,5 +39,6 @@
     "node": ">=18.0.0"
   }
 }
+
 
 
