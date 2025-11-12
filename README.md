@@ -32,7 +32,9 @@ This CLI version brings the power of AI-assisted coding directly to your termina
 
 ### API Requirements
 
-- **Claude API Key** from [Anthropic](https://console.anthropic.com/)
+- **Claude API Key** from any Claude API provider:
+  - Official [Anthropic API](https://console.anthropic.com/)
+  - Any third-party API service that provides Claude models
 - **Supported Model**: Claude 4.5 Sonnet (currently optimized for this model)
   - Other models may have limited functionality
 
@@ -46,12 +48,18 @@ The fastest way to get started:
 npm install -g https://github.com/dulikaifazr/cougar.git
 ```
 
-Then configure your API key:
+Then configure your API credentials:
 
 ```bash
+# For official Anthropic API
 cougar config set api.apiKey <your-api-key>
 cougar config set api.baseUrl https://api.anthropic.com
 cougar config set api.modelId claude-4-5-sonnet-20241022
+
+# For third-party API providers
+cougar config set api.apiKey <your-api-key>
+cougar config set api.baseUrl <your-provider-api-url>
+cougar config set api.modelId <model-id-from-provider>
 ```
 
 Start using Cougar:
@@ -120,14 +128,22 @@ C:\Users\YourUsername\.cougar\config.json
 
 ### Setting Up Your API Key
 
-1. Get your Claude API key from [Anthropic Console](https://console.anthropic.com/)
+1. Get your Claude API key from any Claude API provider.
 
 2. Configure Cougar with your API credentials:
 
+**For Official Anthropic API:**
 ```bash
 cougar config set api.apiKey <your-api-key>
 cougar config set api.baseUrl https://api.anthropic.com
 cougar config set api.modelId claude-4-5-sonnet-20241022
+```
+
+**For Third-Party API Providers:**
+```bash
+cougar config set api.apiKey <your-api-key>
+cougar config set api.baseUrl <your-provider-api-url>
+cougar config set api.modelId <model-id-from-provider>
 ```
 
 3. Verify your configuration:
@@ -304,8 +320,14 @@ cougar-cli/
 # Set model
 cougar config set api.modelId claude-4-5-sonnet-20241022
 
+# Set custom API endpoint (for third-party providers)
+cougar config set api.baseUrl https://your-provider-api.com
+
 # View current model
 cougar config get api.modelId
+
+# View current API endpoint
+cougar config get api.baseUrl
 ```
 
 ## Rules and Workflows
@@ -451,5 +473,11 @@ For issues, questions, or suggestions:
 This is a derivative work of the Cline project. Please ensure you comply with the Apache License 2.0 when using, modifying, or distributing this software.
 
 ---
+
+**Made with ❤️ for developers**
+This is a derivative work of the Cline project. Please ensure you comply with the Apache License 2.0 when using, modifying, or distributing this software.
+
+---
+
 
 **Made with ❤️ for developers**
