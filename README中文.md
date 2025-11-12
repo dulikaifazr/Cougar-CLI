@@ -32,7 +32,9 @@ Cougar CLI 是基于 [Cline](https://github.com/cline/cline) 项目的衍生作�
 
 ### API要求
 
-- **Claude API密钥** 来自 [Anthropic](https://console.anthropic.com/)
+- **Claude API密钥** 来自任何Claude API提供商：
+  - 官方 [Anthropic API](https://console.anthropic.com/)
+  - 任何提供Claude模型的第三方API服务
 - **支持的模型**: Claude 4.5 Sonnet（当前优化支持此模型）
   - 其他模型可能功能有限
 
@@ -46,12 +48,18 @@ Cougar CLI 是基于 [Cline](https://github.com/cline/cline) 项目的衍生作�
 npm install -g https://github.com/dulikaifazr/cougar.git
 ```
 
-然后配置你的API密钥：
+然后配置你的API凭证：
 
 ```bash
+# 官方Anthropic API
 cougar config set api.apiKey <你的API密钥>
 cougar config set api.baseUrl https://api.anthropic.com
 cougar config set api.modelId claude-4-5-sonnet-20241022
+
+# 第三方API提供商
+cougar config set api.apiKey <你的API密钥>
+cougar config set api.baseUrl <你的提供商API地址>
+cougar config set api.modelId <提供商的模型ID>
 ```
 
 开始使用Cougar：
@@ -124,10 +132,18 @@ C:\Users\你的用户名\.cougar\config.json
 
 2. 使用你的API凭证配置 Cougar：
 
+**官方Anthropic API：**
 ```bash
 cougar config set api.apiKey <你的API密钥>
 cougar config set api.baseUrl https://api.anthropic.com
 cougar config set api.modelId claude-4-5-sonnet-20241022
+```
+
+**第三方API提供商：**
+```bash
+cougar config set api.apiKey <你的API密钥>
+cougar config set api.baseUrl <你的提供商API地址>
+cougar config set api.modelId <提供商的模型ID>
 ```
 
 3. 验证你的配置：
@@ -304,8 +320,14 @@ cougar-cli/
 # 设置模型
 cougar config set api.modelId claude-4-5-sonnet-20241022
 
+# 设置自定义API端点（用于第三方提供商）
+cougar config set api.baseUrl https://你的提供商API.com
+
 # 查看当前模型
 cougar config get api.modelId
+
+# 查看当前API端点
+cougar config get api.baseUrl
 ```
 
 ## 规则和工作流
