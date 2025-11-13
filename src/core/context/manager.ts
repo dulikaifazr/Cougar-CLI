@@ -39,7 +39,7 @@ export class ContextManager {
   async loadContextHistory(sessionId: string): Promise<void> {
     const filePath = path.join(
       os.homedir(),
-      '.cline',
+      '.cougar',
       'sessions',
       sessionId,
       'context-updates.json'
@@ -726,4 +726,5 @@ export class ContextManager {
 
     return { totalCharacters: totalCharCount, charactersSaved: totalCharactersSaved };
   }
+
 }
