@@ -15,8 +15,8 @@ import * as path from "path"
  * @returns Promise<string> The absolute path to the shadow git directory
  */
 export async function getShadowGitPath(cwdHash: string): Promise<string> {
-	// CLI 版本: 使用用户主目录下的 .cline-cli 文件夹
-	const globalStoragePath = path.join(os.homedir(), '.cline-cli', 'checkpoints')
+	// CLI 版本: 使用用户主目录下的 .cougar-cli 文件夹
+	const globalStoragePath = path.join(os.homedir(), '.cougar-cli', 'checkpoints')
 	const checkpointsDir = path.join(globalStoragePath, cwdHash)
 	await mkdir(checkpointsDir, { recursive: true })
 	const gitPath = path.join(checkpointsDir, ".git")
