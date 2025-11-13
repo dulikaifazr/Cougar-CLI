@@ -60,5 +60,5 @@ export class SessionManager {
   getSessionPath(): string {
     return this.sessionPath;
   }
-
 }
+
