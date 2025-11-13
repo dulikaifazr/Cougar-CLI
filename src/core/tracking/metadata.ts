@@ -14,7 +14,7 @@ import { fileExists } from '../../utils/fs';
 export function getTaskMetadataPath(sessionId: string): string {
   return path.join(
     os.homedir(),
-    '.cline',
+    '.cougar',
     'sessions',
     sessionId,
     'task-metadata.json'
