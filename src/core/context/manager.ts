@@ -726,5 +726,5 @@ export class ContextManager {
 
     return { totalCharacters: totalCharCount, charactersSaved: totalCharactersSaved };
   }
-
 }
+
