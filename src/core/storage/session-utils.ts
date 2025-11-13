@@ -12,7 +12,7 @@ import { fileExists } from '../../utils/fs';
  * 获取所有会话目录
  */
 export async function getAllSessions(): Promise<string[]> {
-  const sessionsDir = path.join(os.homedir(), '.cline', 'sessions');
+  const sessionsDir = path.join(os.homedir(), '.cougar', 'sessions');
   
   if (!(await fileExists(sessionsDir))) {
     return [];
