@@ -13,7 +13,7 @@ export class HistoryStorage {
   constructor(sessionId: string) {
     this.historyPath = path.join(
       os.homedir(),
-      '.cline',
+      '.cougar',
       'sessions',
       sessionId,
       'history.json'
