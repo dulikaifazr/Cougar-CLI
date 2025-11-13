@@ -22,7 +22,7 @@ export class SessionManager {
 
   constructor(sessionId: string) {
     this.sessionId = sessionId;
-    this.sessionPath = path.join(os.homedir(), '.cline', 'sessions', sessionId);
+    this.sessionPath = path.join(os.homedir(), '.cougar', 'sessions', sessionId);
   }
 
   /**
@@ -60,4 +60,5 @@ export class SessionManager {
   getSessionPath(): string {
     return this.sessionPath;
   }
+
 }
