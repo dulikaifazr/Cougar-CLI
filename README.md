@@ -30,7 +30,7 @@ npm run build
 4. Start the CLI
 
 ```bash
-node cli.js
+node dist\index.js
 ```
 
 ## Windows notes
@@ -45,6 +45,7 @@ node cli.js
 Apache License 2.0. See `LICENSE`.
 
 Thanks to Kode-cli for their contributions.
+
 
 
 
