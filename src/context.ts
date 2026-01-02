@@ -247,7 +247,6 @@ export const getDirectoryStructure = memoize(
         abortController.abort()
       }, 1_000)
       // 🔧 Fix: Use ModelManager instead of legacy function
-      const model = getModelManager().getModelName('main')
       const resultsGen = LSTool.call(
         {
           path: '.',
