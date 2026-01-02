@@ -2,6 +2,16 @@
 
 **An AI-powered programming assistant for the command line**
 
+## LLM providers
+
+Supported model providers:
+
+- OpenRouter
+- OpenAI
+- Claude
+- 智谱（Zhipu）
+- Any provider compatible with the OpenAI API standard
+
 ## Start (from source)
 
 1. Download the source code
@@ -36,7 +46,6 @@ Apache License 2.0. See `LICENSE`.
 
 Thanks to Kode-cli for their contributions.
 
----
 
 
 
