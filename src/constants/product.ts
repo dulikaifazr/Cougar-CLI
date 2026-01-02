@@ -11,7 +11,7 @@ export const ASCII_LOGO = `
 
 export const PRODUCT_NAME = 'Cougar'
 export const PRODUCT_COMMAND = 'cougar'
-export const PRODUCT_URL = 'https://github.com/CougarAI-lab/cougar'
+export const PRODUCT_URL = 'https://github.com/dulikaifazr/Cougar-CLI'
 export const PROJECT_FILE = 'AGENTS.md'
 
 export const CONFIG_BASE_DIR = '.cougar'
