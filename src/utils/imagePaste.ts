@@ -4,11 +4,12 @@ import { readFileSync } from 'fs'
 const SCREENSHOT_PATH = '/tmp/claude_cli_latest_screenshot.png'
 
 export const CLIPBOARD_ERROR_MESSAGE =
-  'No image found in clipboard. Use Cmd + Ctrl + Shift + 4 to copy a screenshot to clipboard.'
+  'No image found in clipboard. On macOS, use Cmd + Ctrl + Shift + 4 to copy a screenshot to clipboard. On Windows, use drag-and-drop or paste an image file path.'
 
 export function getImageFromClipboard(): string | null {
   if (process.platform !== 'darwin') {
-    // only support image paste on macOS for now
+    // Clipboard image paste is only supported on macOS.
+    // On Windows, images are handled via drag-and-drop or by pasting an image file path.
     return null
   }
 
