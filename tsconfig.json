@@ -1,23 +1,93 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "lib": ["ES2020"],
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "esModuleInterop": true,
+    "strict": false,
+    "noImplicitAny": false,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
+    "allowJs": true,
+    "checkJs": false,
+    "outDir": "dist",
+    "rootDir": "src",
+    "jsx": "react",
+    "declaration": false,
     "sourceMap": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "baseUrl": ".",
+    "paths": {
+      "@components": ["src/components"],
+      "@components/*": ["src/components/*"],
+      "@commands": ["src/commands.ts"],
+      "@commands/*": ["src/commands/*"],
+      "@utils": ["src/utils"],
+      "@utils/*": ["src/utils/*"],
+      "@constants": ["src/constants"],
+      "@constants/*": ["src/constants/*"],
+      "@hooks": ["src/hooks"],
+      "@hooks/*": ["src/hooks/*"],
+      "@services": ["src/services"],
+      "@services/*": ["src/services/*"],
+      "@screens": ["src/screens"],
+      "@screens/*": ["src/screens/*"],
+      "@tools": ["src/tools.ts"],
+      "@tools/*": ["src/tools/*"],
+      "@tool": ["src/Tool.ts"],
+      "@cougar-types": ["src/types"],
+      "@cougar-types/*": ["src/types/*"],
+      "@context": ["src/context.ts"],
+      "@context/*": ["src/context/*"],
+      "@history": ["src/history.ts"],
+      "@costTracker": ["src/cost-tracker.ts"],
+      "@permissions": ["src/permissions.ts"],
+      "@query": ["src/query.ts"],
+      "@messages": ["src/messages.ts"],
+      "*": ["node_modules/*", "src/types/*", "src/*"]
+    },
+    "types": ["bun-types", "node"],
+    "allowSyntheticDefaultImports": true,
+    "noEmitOnError": false,
+    "ignoreDeprecations": "5.0",
+    "useUnknownInCatchVariables": false,
+    "noErrorTruncation": true,
+    "noEmit": false,
+    "skipDefaultLibCheck": true,
+    "isolatedModules": true,
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": true,
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitReturns": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "plugins": [
+      {
+        "transform": "ts-transform-define",
+        "type": "config",
+        "config": {
+          "MACRO": "src/constants/macros.ts"
+        }
+      }
+    ]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
-}
+  "exclude": ["node_modules", "dist"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "NodeNext"
+    }
+  }
+} 
+
 
