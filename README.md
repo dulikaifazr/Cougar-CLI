@@ -44,7 +44,8 @@ node dist\index.js
 
 Apache License 2.0. See `LICENSE`.
 
-Thanks to Kode-cli for their contributions.
+Thanks to shareAI-lab/Kode-cli for their contributions.
+
 
 
 
