@@ -5,7 +5,8 @@
     "cougar": "cli.js"
   },
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "test:mcp": "npm run build && node scripts/test-mcp.mjs"
   },
   "dependencies": {
     "@anthropic-ai/bedrock-sdk": "^0.12.6",

@@ -23,7 +23,15 @@ export type McpSSEServerConfig = {
   url: string
 }
 
-export type McpServerConfig = McpStdioServerConfig | McpSSEServerConfig
+export type McpHttpServerConfig = {
+  type: 'http'
+  url: string
+}
+
+export type McpServerConfig =
+  | McpStdioServerConfig
+  | McpSSEServerConfig
+  | McpHttpServerConfig
 
 export type ProjectConfig = {
   allowedTools: string[]
