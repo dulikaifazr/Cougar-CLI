@@ -81,6 +81,7 @@ import {
 } from '@commands/approvedTools'
 import {
   addMcpServer,
+  addParallelSearchServer,
   getMcpServer,
   listMCPServers,
   parseEnvVars,
@@ -543,6 +544,28 @@ ${commandList}`,
     .description('Configure and manage MCP servers')
 
   mcp
+    .command('add-parallel')
+    .description('Add free, keyless Parallel web search and page fetching')
+    .option(
+      '-s, --scope <scope>',
+      'Configuration scope (project, global, or mcprc)',
+      'project',
+    )
+    .action(async options => {
+      try {
+        const scope = ensureConfigScope(options.scope)
+        addParallelSearchServer(scope)
+        console.log(
+          `Added Parallel Search MCP to ${scope} config. Restart Cougar to load its tools.`,
+        )
+        process.exit(0)
+      } catch (error) {
+        console.error((error as Error).message)
+        process.exit(1)
+      }
+    })
+
+  mcp
     .command('serve')
     .description(`Start the ${PRODUCT_NAME} MCP server`)
     .action(async () => {
@@ -765,8 +788,8 @@ ${commandList}`,
         )
       } else {
         for (const [name, server] of Object.entries(servers)) {
-          if (server.type === 'sse') {
-            console.log(`${name}: ${server.url} (SSE)`)
+          if (server.type === 'sse' || server.type === 'http') {
+            console.log(`${name}: ${server.url} (${server.type.toUpperCase()})`)
           } else {
             console.log(`${name}: ${server.command} ${server.args.join(' ')}`)
           }
@@ -777,7 +800,7 @@ ${commandList}`,
 
   mcp
     .command('add-json <name> <json>')
-    .description('Add an MCP server (stdio or SSE) with a JSON string')
+    .description('Add an MCP server (stdio, SSE, or HTTP) with a JSON string')
     .option(
       '-s, --scope <scope>',
       'Configuration scope (project or global)',
@@ -799,14 +822,14 @@ ${commandList}`,
         // Validate the server config
         if (
           !serverConfig.type ||
-          !['stdio', 'sse'].includes(serverConfig.type)
+          !['stdio', 'sse', 'http'].includes(serverConfig.type)
         ) {
-          console.error('Error: Server type must be "stdio" or "sse"')
+          console.error('Error: Server type must be "stdio", "sse", or "http"')
           process.exit(1)
         }
 
-        if (serverConfig.type === 'sse' && !serverConfig.url) {
-          console.error('Error: SSE server must have a URL')
+        if (['sse', 'http'].includes(serverConfig.type) && !serverConfig.url) {
+          console.error('Error: Remote MCP server must have a URL')
           process.exit(1)
         }
 
@@ -819,9 +842,9 @@ ${commandList}`,
         
         addMcpServer(name, serverConfig, scope)
 
-        if (serverConfig.type === 'sse') {
+        if (serverConfig.type === 'sse' || serverConfig.type === 'http') {
           console.log(
-            `Added SSE MCP server ${name} with URL ${serverConfig.url} to ${scope} config`,
+            `Added ${serverConfig.type.toUpperCase()} MCP server ${name} with URL ${serverConfig.url} to ${scope} config`,
           )
         } else {
           console.log(
@@ -850,8 +873,8 @@ ${commandList}`,
       }
       console.log(`${name}:`)
       console.log(`  Scope: ${server.scope}`)
-      if (server.type === 'sse') {
-        console.log(`  Type: sse`)
+      if (server.type === 'sse' || server.type === 'http') {
+        console.log(`  Type: ${server.type}`)
         console.log(`  URL: ${server.url}`)
       } else {
         console.log(`  Type: stdio`)

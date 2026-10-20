@@ -21,6 +21,7 @@ import {
 import { Client } from '@modelcontextprotocol/sdk/client/index.js'
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js'
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
 import {
   CallToolResultSchema,
   ClientRequest,
@@ -32,11 +33,11 @@ import {
   ResultSchema,
 } from '@modelcontextprotocol/sdk/types.js'
 import { memoize, pickBy } from 'lodash-es'
-import type { Tool } from '@tool'
+import type { Tool, ToolUseContext } from '@tool'
 import { MCPTool } from '@tools/MCPTool/MCPTool'
 import { logMCPError } from '@utils/log'
 import { Command } from '@commands'
-import { PRODUCT_COMMAND } from '@constants/product'
+import { PRODUCT_COMMAND, PRODUCT_URL } from '@constants/product'
 
 type McpName = string
 
@@ -129,6 +130,18 @@ export function addMcpServer(
     config.mcpServers[name] = server
     saveCurrentProjectConfig(config)
   }
+}
+
+export function addParallelSearchServer(scope: ConfigScope = 'project'): void {
+  if (getMcpServer('parallel-search')) {
+    throw new Error(
+      'MCP server "parallel-search" already exists. Remove it explicitly before replacing it.',
+    )
+  }
+  addMcpServer('parallel-search', {
+    type: 'http',
+    url: 'https://search.parallel.ai/mcp',
+  }, scope)
 }
 
 export function removeMcpServer(
@@ -226,17 +239,23 @@ async function connectToServer(
   serverRef: McpServerConfig,
 ): Promise<Client> {
   const transport =
-    serverRef.type === 'sse'
-      ? new SSEClientTransport(new URL(serverRef.url))
-      : new StdioClientTransport({
-          command: serverRef.command,
-          args: serverRef.args,
-          env: {
-            ...process.env,
-            ...serverRef.env,
-          } as Record<string, string>,
-          stderr: 'pipe', // prevents error output from the MCP server from printing to the UI
+    serverRef.type === 'http'
+      ? new StreamableHTTPClientTransport(new URL(serverRef.url), {
+          requestInit: {
+            headers: { 'User-Agent': `${PRODUCT_COMMAND}/1.0.0 (+${PRODUCT_URL})` },
+          },
         })
+      : serverRef.type === 'sse'
+        ? new SSEClientTransport(new URL(serverRef.url))
+        : new StdioClientTransport({
+            command: serverRef.command,
+            args: serverRef.args,
+            env: {
+              ...process.env,
+              ...serverRef.env,
+            } as Record<string, string>,
+            stderr: 'pipe', // prevents error output from the MCP server from printing to the UI
+          })
 
   const client = new Client(
     {
@@ -267,7 +286,12 @@ async function connectToServer(
     )
   })
 
-  await Promise.race([connectPromise, timeoutPromise])
+  try {
+    await Promise.race([connectPromise, timeoutPromise])
+  } catch (error) {
+    await client.close().catch(() => {})
+    throw error
+  }
 
   if (serverRef.type === 'stdio') {
     ;(transport as StdioClientTransport).stderr?.on('data', (data: Buffer) => {
@@ -422,7 +446,7 @@ export const getMCPTools = memoize(async (): Promise<Tool[]> => {
           return { result: true }
         },
         async *call(args: Record<string, unknown>, context) {
-          const data = await callMCPTool({ client, tool: tool.name, args })
+          const data = await callMCPTool({ client, tool: tool.name, args, context })
           yield {
             type: 'result' as const,
             data,
@@ -441,21 +465,31 @@ async function callMCPTool({
   client: { client, name },
   tool,
   args,
+  context,
 }: {
   client: ConnectedClient
   tool: string
   args: Record<string, unknown>
+  context: ToolUseContext
 }): Promise<ToolResultBlockParam['content']> {
+  context.abortController.signal.throwIfAborted()
   const result = await client.callTool(
     {
       name: tool,
       arguments: args,
     },
     CallToolResultSchema,
+    { signal: context.abortController.signal, timeout: 60000 },
   )
 
   if ('isError' in result && result.isError) {
-    const errorMessage = `Error calling tool ${tool}: ${result.error}`
+    const detail = Array.isArray(result.content)
+      ? result.content
+          .filter(item => item.type === 'text')
+          .map(item => item.text)
+          .join('\n')
+      : ''
+    const errorMessage = `Error calling tool ${tool}: ${detail || 'Server returned an error'}`
     logMCPError(name, errorMessage)
     throw Error(errorMessage)
   }
